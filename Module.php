@@ -11,6 +11,8 @@
 
 namespace App\GooglestatModule;
 
+use Nette\DI\Container;
+
 /**
  * @author Josef Kříž
  */
@@ -39,16 +41,16 @@ class Module extends \Venne\Module\AutoModule {
 
 
 
-	public function configure(\Venne\DI\Container $container, \App\CoreModule\CmsManager $manager)
+	public function configure(Container $container, \App\CoreModule\CmsManager $manager)
 	{
 		parent::configure($container, $manager);
 
-		$manager->addEventSubscriber(new \App\GooglestatModule\RenderListener($container->params["modules"]["googlestat"]["code"]));
+		$manager->addEventSubscriber(new \App\GooglestatModule\RenderListener($container->parameters["modules"]["googlestat"]["code"]));
 	}
 	
-	public function getForm(\Venne\Config\ConfigBuilder $configManager)
+	public function getForm(Container $container)
 	{
-		return new \App\GooglestatModule\ModuleForm($configManager, $this->getName());
+		return new \App\GooglestatModule\ModuleForm($container->configFormMapper, $this->getName());
 	}
 
 }
