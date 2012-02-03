@@ -1,32 +1,36 @@
 <?php
 
 /**
- * Venne:CMS (version 2.0-dev released on $WCDATE$)
+ * This file is part of the Venne:CMS (https://github.com/Venne)
  *
- * Copyright (c) 2011 Josef Kříž pepakriz@gmail.com
+ * Copyright (c) 2011 Josef Kříž (pepakriz
+ * @gmail.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
  */
 
-namespace App\GooglestatModule;
+namespace App\GooglestatModule\Subscribers;
 
 use Venne;
+use App\CoreModule\Events\RenderEvents;
 
 /**
- * @author Josef Kříž
+ * @author Josef Kříž <pepakriz@gmail.com>
  */
-class RenderListener implements \Doctrine\Common\EventSubscriber {
+class RenderSubscriber implements \Doctrine\Common\EventSubscriber {
 
 
 	/** @var string */
 	protected $code;
 
 
-	public function __construct($code)
+
+	public function __construct(\Nette\DI\Container $container)
 	{
-		$this->code = $code;
+		$this->code = $container->parameters["modules"]["googlestat"]["code"];
 	}
+
 
 
 	/**
@@ -34,20 +38,17 @@ class RenderListener implements \Doctrine\Common\EventSubscriber {
 	 */
 	public function getSubscribedEvents()
 	{
-		return array(
-		\App\CoreModule\RenderEvents::onHeadEnd
-		);
+		return array(RenderEvents::onHeadEnd);
 	}
 
 
+
 	/**
-	 * @param \Doctrine\ORM\Event\OnFlushEventArgs $args 
+	 * @param \Doctrine\ORM\Event\OnFlushEventArgs $args
 	 */
 	public function onHeadEnd()
 	{
-		echo "
-	<script type=\"text/javascript\">
-
+		echo "	<script type=\"text/javascript\">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', '{$this->code}']);
 	  _gaq.push(['_trackPageview']);
@@ -57,8 +58,8 @@ class RenderListener implements \Doctrine\Common\EventSubscriber {
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-
-	</script>";
+	</script>
+";
 	}
 
 }
