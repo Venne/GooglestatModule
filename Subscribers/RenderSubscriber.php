@@ -3,7 +3,7 @@
 /**
  * This file is part of the Venne:CMS (https://github.com/Venne)
  *
- * Copyright (c) 2011 Josef Kříž (pepakriz
+ * Copyright (c) 2011, 2012 Josef Kříž (http://www.josef-kriz.cz)
  * @gmail.com)
  *
  * For the full copyright and license information, please view
